@@ -7,7 +7,7 @@ table = dynamodb.Table('LambdaLogs')
 
 def lambda_handler(event, context):
     
-    message = "Hello from DevOps to devops engineer "
+    message = "Hello from DevOps to devops engineerrrr "
     
     # Store in DynamoDB
     table.put_item(
