@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+
+    environment {
+        AWS_DEFAULT_REGION = 'ap-south-1'
+        FUNCTION_NAME = 'devops-lambda-jenkins'
+    }
+
+    stages {
+
+        stage('Zip Code') {
+            steps {
+                sh 'zip function.zip lambda_function.py'
+            }
+        }
+
+        stage('Deploy to Lambda') {
+            steps {
+                withCredentials([
+                    [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-lambda']
+                ]) {
+                    sh '''
+                    aws lambda update-function-code \
+                    --function-name $FUNCTION_NAME \
+                    --zip-file fileb://function.zip
+                    '''
+                }
+            }
+        }
+    }
+}
