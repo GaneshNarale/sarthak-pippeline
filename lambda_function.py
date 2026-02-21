@@ -1,9 +1,24 @@
 import json
+import boto3
+import datetime
+
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('LambdaLogs')
 
 def lambda_handler(event, context):
-    # TODO implement
+    
+    message = "Hello from DevOps CI/CD"
+    
+    # Store in DynamoDB
+    table.put_item(
+        Item={
+            'id': str(datetime.datetime.now().timestamp()),
+            'message': message
+        }
+    )
+
     return {
         'statusCode': 200,
-        'body': json.dumps('ganesh pipelinessss')
+        'body': json.dumps(message)
     }
 
